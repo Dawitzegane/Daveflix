@@ -1,10 +1,33 @@
-import React from "react";
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+} from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 import styled from "styled-components";
 import BackgroundImage from "../components/BackgroundImage";
 import Header from "../components/Header";
+import firebaseAuth from "../utils/firebase-config";
 export default function Signup() {
+  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState();
+  const [formValues, setFormValues] = useState({
+    email: "",
+    password: "",
+  });
+  const handleSignIn = async () => {
+    try {
+      const { email, password } = formValues;
+      await createUserWithEmailAndPassword(firebaseAuth, email, password);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  onAuthStateChanged(firebaseAuth, (currentuser) => {
+    if (currentuser) navigate("/");
+  });
   return (
-    <Container>
+    <Container showPassword>
       <BackgroundImage />
       <div className="content">
         <Header login />
@@ -21,15 +44,34 @@ export default function Signup() {
               type="email"
               placeholder="enter your email"
               name="email"
+              value={formValues.email}
+              onChange={(e) =>
+                setFormValues({
+                  ...formValues,
+                  [e.target.name]: e.target.value,
+                })
+              }
             ></input>
-            <input
-              type="password"
-              placeholder="enter your password"
-              name="password"
-            ></input>
-            <button>Get Started</button>
+            {showPassword && (
+              <input
+                type="password"
+                placeholder="enter your password"
+                name="password"
+                value={formValues.password}
+                onChange={(e) =>
+                  setFormValues({
+                    ...formValues,
+                    [e.target.name]: e.target.value,
+                  })
+                }
+              ></input>
+            )}
+
+            {!showPassword && (
+              <button onClick={() => setShowPassword(true)}>Get Started</button>
+            )}
           </div>
-          <button>Login</button>
+          <button onClick={handleSignIn}>Sign Up</button>
         </div>
       </div>
     </Container>
@@ -58,7 +100,8 @@ const Container = styled.div`
     }
     .form{
     display : grid;
-    //  grid-template-columns: ;
+     grid-template-columns: ${({ showPassword }) =>
+       showPassword ? "1fr 1fr" : "2fr 1fr"};
     width : 60%;
     input{
     color : black;
