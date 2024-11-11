@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import background from "../assets/d.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaPowerOff, FaSearch } from "react-icons/fa";
 import firebaseAuth from "../utils/firebase-config";
-import { signOut } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 export default function Navbar({ isScrolled }) {
   const links = [
     { name: "home", link: "/" },
@@ -12,6 +12,10 @@ export default function Navbar({ isScrolled }) {
     { name: "Movies", link: "/movies" },
     { name: "My List", link: "/mylist" },
   ];
+  const navigate = useNavigate();
+  onAuthStateChanged(firebaseAuth, (currentuser) => {
+    if (!currentuser) navigate("/login");
+  });
   const [showSearch, setShowSearch] = useState(false);
   const [inputHover, setInputHover] = useState(false);
   return (
@@ -93,10 +97,55 @@ const Container = styled.div`
         }
       }
     }
-    .rigt {
+    .right {
       gap: 1rem;
       button {
         background-color: transparent;
+        border: none;
+        cursor: pointer;
+        &:focus {
+          outline: none;
+        }
+        svg {
+          color: #f34242;
+          font-size: 1.2rem;
+        }
+      }
+      .search {
+        display: flex;
+        gap: 0.4rem;
+        align-items: center;
+        justify-content: center;
+        padding: 0.2rem;
+        padding-left: 05rem;
+        button {
+          background-color: transparent;
+          svg {
+            color: white;
+          }
+        }
+        input {
+          width: 0;
+          opacity: 0;
+          visibility: hidden;
+          transition: 0.3s ease-in-out;
+          background-color: transparent;
+          border: none;
+          color: white;
+          &:focus {
+            outline: none;
+          }
+        }
+      }
+      .show-search {
+        border: 1px solid white;
+        background-color: rgba(0, 0, 0, 0.6);
+        input {
+          width: 100%;
+          opacity: 1;
+          visibility: visible;
+          padding: 0.3rem;
+        }
       }
     }
   }
