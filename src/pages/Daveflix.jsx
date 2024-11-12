@@ -20,6 +20,19 @@ export default function Daveflix() {
           alt="background"
           className="background-image"
         />
+        <div className="container">
+          <div className="logo">
+            <img src={MovieLogo} alt="Movie Logo" />
+          </div>
+          <div className="button flex">
+            <button className="flex j-center a-center">
+              <FaPlay /> Play
+            </button>
+            <button className="flex j-center a-center">
+              <AiOutlineInfoCircle /> More Info
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
