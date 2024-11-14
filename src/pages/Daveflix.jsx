@@ -5,13 +5,14 @@ import MovieLogo from "../assets/homeTitle.webp";
 import { FaPlay } from "react-icons/fa";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 export default function Daveflix() {
   const [isScrolled, setIsScrolled] = useState(false);
   window.onscroll = () => {
     setIsScrolled(window.pageYOffset === 0 ? false : true);
     return () => (window.onscroll = null);
   };
-
+  const navigate = useNavigate();
   return (
     <Container>
       <Navbar isScrolled={isScrolled} />
@@ -26,7 +27,10 @@ export default function Daveflix() {
             <img src={MovieLogo} alt="Movie Logo" />
           </div>
           <div className="button flex">
-            <button className="flex j-center a-center">
+            <button
+              className="flex j-center a-center"
+              onClick={() => navigate("/player")}
+            >
               <FaPlay /> Play
             </button>
             <button className="flex j-center a-center">
