@@ -63,7 +63,7 @@ const Container = styled.div`
           margin-left: 5rem;
         }
       }
-      .buttons {
+      .button {
         margin: 5rem;
         gap: 2rem;
         button {
