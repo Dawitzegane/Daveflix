@@ -54,24 +54,38 @@ h1 {
     margin-left: 50px;
 }
 .wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    
     .slider {
         width: max-content;
         gap: 1rem;
         transform: translateX(0px);
         transition: 0.3s ease-in-out;
-        margin-left: 50px;
+        
     }
-    .slider-action {
-        position: absolute;
-        z-index: 99;
-        height: 100%;
-        top: 0;
-        bottom: 0;
-        width: 50px;
-        transition: 0.3s ease-in-out;
+     .slider-action {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 99;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      transition: opacity 0.3s ease-in-out;
         svg {
             font-size: 2rem;
+            color: white;
         }
+       &:hover {
+        opacity: 0.7;
+      }
     }
     .none {
         display: none;
