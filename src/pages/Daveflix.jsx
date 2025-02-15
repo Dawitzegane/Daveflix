@@ -22,7 +22,7 @@ export default function Daveflix() {
 
   useEffect(() => {
     if (genresLoaded) dispatch(fetchMovies({ type: "all" }));
-  });
+  }, [genresLoaded, dispatch]);
   window.onscroll = () => {
     setIsScrolled(window.pageYOffset === 0 ? false : true);
     return () => (window.onscroll = null);
