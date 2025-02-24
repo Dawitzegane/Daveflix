@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchMovies, getGenres } from "../store";
 import Slider from "../components/Slider";
+
 export default function Daveflix() {
   const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
@@ -23,10 +24,16 @@ export default function Daveflix() {
   useEffect(() => {
     if (genresLoaded) dispatch(fetchMovies({ type: "all" }));
   }, [genresLoaded, dispatch]);
-  window.onscroll = () => {
-    setIsScrolled(window.pageYOffset === 0 ? false : true);
-    return () => (window.onscroll = null);
-  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.pageYOffset === 0 ? false : true);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <Container>
       <Navbar isScrolled={isScrolled} />
@@ -57,6 +64,7 @@ export default function Daveflix() {
     </Container>
   );
 }
+
 const Container = styled.div`
   background-color: black;
   .hero {

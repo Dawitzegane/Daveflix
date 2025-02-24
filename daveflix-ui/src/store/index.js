@@ -74,6 +74,29 @@ export const fetchDataByGenre = createAsyncThunk(
   }
 );
 
+export const getUserLikedMovies = createAsyncThunk(
+  "daveflix/getLiked",
+  async (email) => {
+    const {
+      data: { movies },
+    } = await axios.get(`http://localhost:5003/api/user/liked/${email}`);
+    return movies;
+  }
+);
+
+export const removeFromLikedMovies = createAsyncThunk(
+  "daveflix/deleteLiked",
+  async (email, movieId) => {
+    const {
+      data: { movies },
+    } = await axios.put(`http://localhost:5003/api/user/delete`, {
+      email,
+      movieId,
+    });
+    return movies;
+  }
+);
+
 const DaveflixSlice = createSlice({
   name: "Daveflix",
   initialState,
@@ -86,6 +109,12 @@ const DaveflixSlice = createSlice({
       state.movies = action.payload;
     });
     builder.addCase(fetchDataByGenre.fulfilled, (state, action) => {
+      state.movies = action.payload;
+    });
+    builder.addCase(getUserLikedMovies.fulfilled, (state, action) => {
+      state.movies = action.payload;
+    });
+    builder.addCase(removeFromLikedMovies.fulfilled, (state, action) => {
       state.movies = action.payload;
     });
   },

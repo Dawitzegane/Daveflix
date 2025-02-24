@@ -8,6 +8,7 @@ import NotAvailable from "../components/NotAvailable";
 import Navbar from "../components/Navbar";
 import Slider from "../components/Slider";
 import SelectGenre from "../components/SelectGenre";
+
 export default function Movies() {
     const [isScrolled, setIsScrolled] = useState(false);
     const genresLoaded = useSelector((state) => state.daveflix.genresLoaded);
@@ -22,13 +23,20 @@ export default function Movies() {
     useEffect(() => {
         if (genresLoaded) dispatch(fetchMovies({ type: "movies" }));
     }, [genresLoaded, dispatch]);
-    window.onscroll = () => {
-        setIsScrolled(window.pageYOffset === 0 ? false : true);
-        return () => (window.onscroll = null);
-    };
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.pageYOffset === 0 ? false : true);
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
     onAuthStateChanged(firebaseAuth, (currentuser) => {
         // if (currentuser) navigate("/");
     });
+
     return (
         <Container>
             <div className="navbar">
@@ -41,6 +49,7 @@ export default function Movies() {
         </Container>
     )
 }
+
 const Container = styled.div`
 .data {
 margin-top: 8rem;
